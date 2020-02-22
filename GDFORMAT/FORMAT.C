@@ -53,71 +53,74 @@ BPB /* bios parameter block */
 /***************************************************************************/
 
 main(p)
-char *p;
+char* p;
 {
 	char  *d;
 	int i, j, drv, rec, fs, f1, f2, nd;
 	BPB *b;
 	long err, sp;
-
 	/* Get drive letter from command tail using base page pointer.*/
 
-	if (p[0x80])
-	{
-		p += 0x81;
-		while (*p == ' ')	/* scan past initial blanks */
-			p++;
-		drv = (*p >= 'a') && (*p <= 'z') ? *p -'a' : *p - 'A';
-		if (drv & 0xFFF0)	/* out of range? */
-			P_Term(1);
-	}
-	else
-		P_Term(2);
+	
+// 	if (p[0x80])
+// 	{
+// 		p += 0x81;
+// 		while (*p == ' ')	/* scan past initial blanks */
+// 			p++;
+// 		drv = (*p >= 'a') && (*p <= 'z') ? *p -'a' : *p - 'A';
+// 		if (drv & 0xFFF0)	/* out of range? */
+// 			P_Term(1);
+// 	}
+// 	else
+// 		P_Term(2);
+		
 
-	buf[0] = FORMAT_DRIVE;
+// 	buf[0] = FORMAT_DRIVE;
+// 
+// 	/* Format the disk.*/
+// 
+// 	while ( (err = F_IOCtl(5, drv+1, 1, &buf)) == E_CHNG )
+// 		;
+// 	if ( err )
+// 		P_Term( (int)err );
+// 
+// 	/* Init the disk's FATS and root directory. */
+// 
+// 	for (i=0; i < BUFSIZ; i++)
+// 		buf[i] = 0;
+// 
+// 	buf[0] = 0xF7;
+// 	buf[1] = 0xFF;
+// 	buf[2] = 0xFF;
+// 
+// 	sp = S_State(0L);
+// 
+// 	b = GetBPB(drv);
+// 
+// 	if (b->b_flags & 1)
+// 		buf[3] = 0xFF;
+// 
+// 	f1 = b->fatrec - b->fsiz;
+// 	f2 = b->fatrec;
+// 	fs = b->fsiz;
+// 	RWAbs(1,buf,fs,f1,drv);
+// 	RWAbs(1,buf,fs,f2,drv);
+// 	nd = b->recsiz / 32;
+// 	d = buf;
+// 
+// 	for (i = 0; i < nd; i++)
+// 	{
+// 		*d++ = 0;
+// 		for (j = 0; j < 31; j++)
+// 			*d++ = 0;
+// 	}
+// 
+// 	rec = f2 + fs;
+// 
+// 	for (i = 0; i < b->rdlen; i++, rec++)
+// 		RWAbs(1,buf,1,rec,drv);
+// 
+// 	S_State(sp);
 
-	/* Format the disk.*/
-
-	while ( (err = F_IOCtl(5, drv+1, 1, &buf)) == E_CHNG )
-		;
-	if ( err )
-		P_Term( (int)err );
-
-	/* Init the disk's FATS and root directory. */
-
-	for (i=0; i < BUFSIZ; i++)
-		buf[i] = 0;
-
-	buf[0] = 0xF7;
-	buf[1] = 0xFF;
-	buf[2] = 0xFF;
-
-	sp = S_State(0L);
-
-	b = GetBPB(drv);
-
-	if (b->b_flags & 1)
-		buf[3] = 0xFF;
-
-	f1 = b->fatrec - b->fsiz;
-	f2 = b->fatrec;
-	fs = b->fsiz;
-	RWAbs(1,buf,fs,f1,drv);
-	RWAbs(1,buf,fs,f2,drv);
-	nd = b->recsiz / 32;
-	d = buf;
-
-	for (i = 0; i < nd; i++)
-	{
-		*d++ = 0;
-		for (j = 0; j < 31; j++)
-			*d++ = 0;
-	}
-
-	rec = f2 + fs;
-
-	for (i = 0; i < b->rdlen; i++, rec++)
-		RWAbs(1,buf,1,rec,drv);
-
-	S_State(sp);
+	P_Term0();
 }

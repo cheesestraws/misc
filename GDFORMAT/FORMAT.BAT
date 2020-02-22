@@ -8,9 +8,6 @@ era format.2
 \tools\as68 -l -s \tools\ -u format.s 
 era  format.s
 
-rem build bios stubs
-\tools\as68 -l -s \tools\ -u bios.s
-
-\tools\link68 format.rel = bios,mini,format
+\tools\link68 format.rel = format,mini
 \tools\relmod format.rel format.prg
 
